@@ -3,9 +3,11 @@ package com.example.alice.myhealth;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -48,13 +50,22 @@ public class Login extends AppCompatActivity {
             String email = mEmail.getText().toString();
             String password=mPassword.getText().toString();
 
-            mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            if(TextUtils.isEmpty(email)||TextUtils.isEmpty(password)){
 
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
 
-                }
-            });
+                mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+
+                        if(!task.isSuccessful()){
+                            Toast.makeText(Login.this,"Sign In Problem", Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+
+                });
+            }
 
     }
 }
